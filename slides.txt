@@ -1,0 +1,112 @@
+
+=====================================
+Continuous Integration for JavaScript
+=====================================
+
+:Author: Kumar McMillan
+:Location: JsChi Meetup
+:Duration: Lightning!
+
+
+addons.mozilla.org
+==================
+
+.. image:: images/amo.png
+
+AMO
+===
+
+.. class:: incremental
+
+  - The AMO website
+  
+    - 70% Python (Django)
+    - 30% JavaScript (jQuery, etc)
+
+  - The test suite
+  
+    - Python: ~1500 tests
+    - Javascript: 0 tests
+  
+Why test JavaScript?
+====================
+
+- refactor
+- upgrade libraries
+- understand you teammate's code
+- errors / timeouts
+  
+JavaScript Example
+==================
+
+.. code-block:: html
+  
+  <div class="trans">
+    <textarea lang="en-us" name="s_en-us">
+    Firebug integrates with Firefox...
+    </textarea>
+    <textarea lang="ja" name="s_ja">
+    Firebug は、Web ページを閲覧中にクリック一つ
+    </textarea>
+  </div>
+
+JavaScript Example
+==================
+
+.. code-block:: javascript
+
+  el.find(".trans textarea[lang]").each(function() {    
+    $(format(".trans>:not([lang={0}])", currentLocale)).hide();
+    $(format(".trans [lang={0}]", currentLocale)).show();
+  });
+
+QUnit Example
+=============
+
+.. code-block:: javascript
+
+  test('Japanese', function() {
+      z.refreshL10n('ja');
+      equals($('textarea:visible').text(),
+             'Firebug は、Web ページを閲覧中にクリック一つ');
+  });
+
+QUnit Test Suite
+================
+
+.. image:: images/qunit.png
+
+Why A Browser?
+==============
+
+- It's like production
+- re-use HTML snippets from Django
+  
+  - no database
+  - no Ajax
+
+- Firefox nightly builds (ouch)
+- Firefox Mobile
+
+CI Goal
+=======
+
+.. image:: images/ci-goal.png
+
+JS TestNet
+==========
+
+.. image:: images/jstestnet.png
+
+JS TestNet
+==========
+
+Demo!
+
+JS TestNet
+==========
+
+- https://github.com/kumar303/jstestnet
+- https://github.com/kumar303/jstestnetlib
+- `@kumar303 <http://twitter.com/kumar303>`_
+- http://farmdev.com/
