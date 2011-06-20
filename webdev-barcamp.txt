@@ -1,0 +1,174 @@
+
+=========================
+Javascript Testing and CI
+=========================
+
+:Author: Kumar McMillan
+:Location: WebDev Barcamp!
+
+Overview
+========
+
+- JavaScript testing for AMO / SUMO
+
+  - strategies and patterns
+  - caveats
+  - future enhancements
+
+- Integration with CI
+
+  - setting up jstestnet
+
+JavaScript Pattern
+==================
+
+- tools: jQuery + plugins
+
+.. class:: huge
+
+    [DOM] <----> [JS behavior]
+
+- JS often essential
+
+Why Test JavaScript?
+====================
+
+- errors / timeouts
+- refactoring
+- upgrading libraries
+- understanding your teammate's code
+- freedom to hack
+
+AMO Developer Hub
+=================
+
+.. code-block:: html
+  
+  <div class="trans">
+    <textarea lang="en-us" name="s_en-us">
+    Firebug integrates with Firefox...
+    </textarea>
+    <textarea lang="ja" name="s_ja">
+    Firebug は、Web ページを閲覧中にクリック一つ
+    </textarea>
+  </div>
+
+Test Example
+============
+
+http://docs.jquery.com/Qunit
+
+.. code-block:: javascript
+
+  test('Japanese', function() {
+      z.refreshL10n('ja');
+      equals($('textarea:visible').text(),
+             'Firebug は、Web ページを閲覧中にクリック一つ');
+  });
+
+QUnit Test Suite
+================
+
+.. image:: images/qunit.png
+
+Django-Qunit
+============
+
+- ``include('django_qunit.urls')``
+- ``media/js/tests/yourmodule_tests.js``
+- ``media/js/tests/suite.json`` :
+
+.. code-block:: javascript
+
+  {"name": "Test Suite",
+   "extra_media_urls": [
+            "js/lib/some_library.js"]}
+
+Mockjax
+=======
+
+.. code-block:: javascript
+
+  asyncTest('Test validate', function() {
+      $.mockjax({
+          responseText: {success: false}
+      });
+      validate();
+      tests.waitFor(function() {
+          return $('#result').length;
+      }).thenDo(function() {
+          ok($('#result').hasClass('failed'));
+          start();
+      });
+  });
+
+Testing by event
+================
+
+.. code-block:: javascript
+
+  test('Test validate', function() {
+      this.sandbox.trigger('start.validation',
+                           {success: true});
+      ok($('#result').hasClass('passed'));
+  });
+
+Caveats
+=======
+
+- fixture HTML vs production
+
+  - Django snippets
+
+- async :(
+
+  - sandbox collisions
+  - ``$('#selector', this.sandbox)``
+
+- isolated to UI tests
+
+  - no database
+  - contrast with Selenium
+
+Future Ideas
+============
+
+- Better fixtures (Peter's enhancements?)
+- Visual test pages
+- Look at ``manage.py jstest``
+
+CI Goal
+=======
+
+.. image:: images/ci-goal.png
+
+JS TestNet
+==========
+
+https://github.com/kumar303/jstestnet
+
+.. image:: images/jstestnet.png
+
+JS TestNet
+==========
+
+[Demo]
+
+Future Ideas
+============
+
+- prevent caching in <iframe> / <script>
+
+  - dev server's responsibility
+
+- use socket.io / TornadIO
+
+  - cmd line development
+
+That's it
+=========
+
+Questions?
+
+- AMO's JS test docs: http://bit.ly/kH4zaR
+- https://github.com/kumar303/jstestnet
